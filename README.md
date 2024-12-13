@@ -1,7 +1,7 @@
 # <h1 align="center">Simulation de Particule autour d'un Trou Noir de Kerr</h1>
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/ec559a9f6bfd399b82bb44393651661b08aaf7ba/icons/folder-markdown-open.svg" width="30%">
+    <img src="https://github.com/Lam1ne/Simulation-Particule-Trou-Noir-de-Kerr/blob/master/cover.png" width="30%">
 </p>
 
 <p align="center">
