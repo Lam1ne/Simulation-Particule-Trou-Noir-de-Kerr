@@ -62,4 +62,4 @@ Ce projet, réalisé dans le cadre de l'UE "Programmation Méthode Numérique", 
 
 ---
 
-<p align="center">Fait avec ❤️ par <strong>Lamine</strong></p>
+<p align="center">Fait avec ❤️ par <strong>Lam1ne</strong></p>
