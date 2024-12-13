@@ -1,7 +1,7 @@
 # <h1 align="center">Simulation de Particule autour d'un Trou Noir de Kerr</h1>
 
 <p align="center">
-    <img src="https://github.com/Lam1ne/Simulation-Particule-Trou-Noir-de-Kerr/blob/master/cover.png" width="50%">
+    <img src="https://github.com/Lam1ne/Simulation-Particule-Trou-Noir-de-Kerr/blob/master/cover.png" width="70%">
 </p>
 
 <p align="center">
@@ -58,6 +58,7 @@ Ce projet, réalisé dans le cadre de l'UE "Programmation Méthode Numérique", 
 
 - The Mathematical Theory of Black Holes, S. Chandrasekhar, Clarendon Press, Oxford Classic Texts in the Physical Sciences
 - A First Course In General Relativity, Bernard Schutz
+- D'innombrables vidéos YouTube pour implémenter ImGui et OpenGL
 
 ---
 
