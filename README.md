@@ -18,7 +18,7 @@
 ## 📖 Description
 
 Ce projet, réalisé dans le cadre de l'UE "Programmation Méthode Numérique", simule la trajectoire d'une particule autour d'un trou noir de Kerr en utilisant les équations de la relativité générale. 
-Vous pouvez également consulter le < a href="https://github.com/Lam1ne/Simulation-Particule-Trou-Noir-de-Kerr/blob/master/Th%C3%A9orie.pdf" > document rédigé < /a > du projet ainsi que la < a href="https://github.com/Lam1ne/Simulation-Particule-Trou-Noir-de-Kerr/blob/master/Presentation%20Beamer.pdf" > présentation associée < /a >, pour un aperçu complet des aspects théoriques et pratiques de sa réalisation."
+Vous pouvez également consulter le <a href="https://github.com/Lam1ne/Simulation-Particule-Trou-Noir-de-Kerr/blob/master/Th%C3%A9orie.pdf" > document rédigé </a> du projet ainsi que la <a href="https://github.com/Lam1ne/Simulation-Particule-Trou-Noir-de-Kerr/blob/master/Presentation%20Beamer.pdf"> présentation associée </a>, pour un aperçu complet des aspects théoriques et pratiques de sa réalisation."
 
 ### Caractéristiques principales
 - Visualisation 3D interactive avec OpenGL
