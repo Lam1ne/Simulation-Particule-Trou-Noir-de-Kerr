@@ -33,7 +33,7 @@ struct ConditionsInitiales {
     double p_theta;
 };
 
-// Structure pour l'état des géodésiques
+// Structure pour l'Ã©tat des gÃ©odÃ©siques
 struct EtatGeodesique {
     double r;
     double theta;
@@ -52,11 +52,11 @@ struct EtatGeodesique {
         p_theta = init.p_theta;
     }
 
-    // Constructeur par défaut
+    // Constructeur par dÃ©faut
     EtatGeodesique() : r(0), theta(0), phi(0), tau(0), p_r(0), p_theta(0) {}
 };
 
-// Conversion des coordonnées sphériques en cartésiennes
+// Conversion des coordonnÃ©es sphÃ©riques en cartÃ©siennes
 tuple<double, double, double> cartesian(double r, double theta, double phi, double a) {
     double x = sqrt(r * r + a * a) * sin(theta) * cos(phi);
     double y = sqrt(r * r + a * a) * sin(theta) * sin(phi);
@@ -64,7 +64,7 @@ tuple<double, double, double> cartesian(double r, double theta, double phi, doub
     return make_tuple(x, y, z);
 }
 
-// Méthode de Runge-Kutta 4 pour l'intégration des géodésiques
+// MÃ©thode de Runge-Kutta 4 pour l'intÃ©gration des gÃ©odÃ©siques
 EtatGeodesique rungeKutta4(const EtatGeodesique& etat, double dt, double a, double mu, double E, double L, double Q, double M) {
     auto derivatives = [&](const EtatGeodesique& s) -> EtatGeodesique {
         double r = s.r;
@@ -75,11 +75,11 @@ EtatGeodesique rungeKutta4(const EtatGeodesique& etat, double dt, double a, doub
         double Delta = r * r - 2.0 * M * r + a * a;
         double k = Q + L * L + a * a * (E * E + mu);
 
-        // Éviter la division par zéro
+        // Ã‰viter la division par zÃ©ro
         if (Sigma < 1e-6) Sigma = 1e-6;
         if (Delta < 1e-6) Delta = 1e-6;
 
-        // Calcul des dérivées
+        // Calcul des dÃ©rivÃ©es
         double dr_dtau = Delta / Sigma * p_r;
         double dtheta_dtau = p_theta / Sigma;
         double dphi_dtau = (2.0 * a * r * E + (Sigma - 2.0 * r) * L / (sin(theta) * sin(theta))) / (Sigma * Delta);
@@ -99,7 +99,7 @@ EtatGeodesique rungeKutta4(const EtatGeodesique& etat, double dt, double a, doub
         return deriv;
         };
 
-    // Calcul des k1 à k4
+    // Calcul des k1 Ã  k4
     EtatGeodesique k1 = derivatives(etat);
 
     EtatGeodesique etat_k2;
@@ -129,7 +129,7 @@ EtatGeodesique rungeKutta4(const EtatGeodesique& etat, double dt, double a, doub
     etat_k4.p_theta = etat.p_theta + dt * k3.p_theta;
     EtatGeodesique k4 = derivatives(etat_k4);
 
-    // Combiner pour obtenir le nouvel état
+    // Combiner pour obtenir le nouvel Ã©tat
     EtatGeodesique nouvelEtat;
     nouvelEtat.r = etat.r + (dt / 6.0) * (k1.r + 2.0 * k2.r + 2.0 * k3.r + k4.r);
     nouvelEtat.theta = etat.theta + (dt / 6.0) * (k1.theta + 2.0 * k2.theta + 2.0 * k3.theta + k4.theta);
@@ -141,12 +141,12 @@ EtatGeodesique rungeKutta4(const EtatGeodesique& etat, double dt, double a, doub
     return nouvelEtat;
 }
 
-// Variables de caméra
+// Variables de camÃ©ra
 float distance_camera = 100.0f;
 float yaw_camera = 0.0f;
 float pitch_camera = 0.0f;
 
-// Variables pour la gestion des entrées de la souris
+// Variables pour la gestion des entrÃ©es de la souris
 bool souris_gauche_pressee = false;
 double derniere_x = 0.0, derniere_y = 0.0;
 float sensibilite = 0.005f;
@@ -172,7 +172,7 @@ void callback_position_souris(GLFWwindow* window, double xpos, double ypos) {
         derniere_x = xpos;
         derniere_y = ypos;
 
-        // Mettre à jour les angles de la caméra
+        // Mettre Ã  jour les angles de la camÃ©ra
         yaw_camera += static_cast<float>(delta_x) * sensibilite;
         pitch_camera += static_cast<float>(delta_y) * sensibilite;
 
@@ -187,14 +187,14 @@ void callback_position_souris(GLFWwindow* window, double xpos, double ypos) {
 // Callback pour la molette de la souris
 void callback_molette(GLFWwindow* window, double xoffset, double yoffset) {
     distance_camera -= static_cast<float>(yoffset) * 5.0f;
-    // Limiter la distance de la caméra sans utiliser clamp
+    // Limiter la distance de la camÃ©ra sans utiliser clamp
     if (distance_camera < 10.0f)
         distance_camera = 10.0f;
     if (distance_camera > 500.0f)
         distance_camera = 500.0f;
 }
 
-// Fonction pour dessiner l'ergosphère
+// Fonction pour dessiner l'ergosphÃ¨re
 void dessinerErgosphere(double M, double a, int slices = 50, int stacks = 50) {
     GLfloat ambient[] = { 0.0f, 0.5f, 0.0f, 0.3f };
     GLfloat diffuse[] = { 0.0f, 1.0f, 0.0f, 0.3f };
@@ -242,7 +242,7 @@ void dessinerErgosphere(double M, double a, int slices = 50, int stacks = 50) {
     glDisable(GL_BLEND);
 }
 
-// Fonction pour dessiner le disque d'accrétion
+// Fonction pour dessiner le disque d'accrÃ©tion
 void dessinerDisqueAccretion(double M, double a, double rayon_interne = 3.0, double rayon_externe = 15.0, int segments = 200) {
     GLfloat ambient_disk[] = { 1.0f, 0.5f, 0.0f, 0.7f };
     GLfloat diffuse_disk[] = { 1.0f, 0.5f, 0.0f, 0.7f };
@@ -271,7 +271,7 @@ void dessinerDisqueAccretion(double M, double a, double rayon_interne = 3.0, dou
         double x_externe_next = rayon_externe * cos(theta_next);
         double y_externe_next = rayon_externe * sin(theta_next);
 
-        // Ajout d'une légère variation en z
+        // Ajout d'une lÃ©gÃ¨re variation en z
         double z_interne = 0.0;
         double z_externe = 0.0;
         double z_interne_next = 0.05;
@@ -371,10 +371,10 @@ int main(int, char**) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
 
-    // Création de la fenêtre GLFW
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Simulateur de géodésiques de trou noir de Kerr", NULL, NULL);
+    // CrÃ©ation de la fenÃªtre GLFW
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Simulateur de gÃ©odÃ©siques de trou noir de Kerr", NULL, NULL);
     if (window == NULL) {
-        cerr << "Erreur: Impossible de créer la fenêtre GLFW\n";
+        cerr << "Erreur: Impossible de crÃ©er la fenÃªtre GLFW\n";
         glfwTerminate();
         return 1;
     }
@@ -402,13 +402,13 @@ int main(int, char**) {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    // Activation des tests de profondeur et de l'éclairage
+    // Activation des tests de profondeur et de l'Ã©clairage
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-    // Définition des propriétés de la lumière
+    // DÃ©finition des propriÃ©tÃ©s de la lumiÃ¨re
     GLfloat light_position[] = { 100.0f, 100.0f, 100.0f, 1.0f };
     GLfloat light_diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     GLfloat light_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -419,18 +419,18 @@ int main(int, char**) {
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
     glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 
-    // Propriétés matérielles globales
+    // PropriÃ©tÃ©s matÃ©rielles globales
     GLfloat material_shininess[] = { 50.0f };
     glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
     glDisable(GL_COLOR_MATERIAL);
     glEnable(GL_NORMALIZE);
     glShadeModel(GL_SMOOTH);
 
-    // Paramètres de la simulation
+    // ParamÃ¨tres de la simulation
     double M = 1.0;          // Masse
-    float a = 0.9f;          // Paramètre de spin (a < M)
+    float a = 0.9f;          // ParamÃ¨tre de spin (a < M)
     double mu = -1.0;        // Constante de normalisation
-    double E = 0.935179;     // Énergie
+    double E = 0.935179;     // Ã‰nergie
     double L = 2.37176;      // Moment angulaire
     double Q = 3.82514;      // Constante de Carter
 
@@ -443,45 +443,45 @@ int main(int, char**) {
     conditions_init.p_r = 0.0;
     conditions_init.p_theta = 1.9558;
 
-    // État actuel
+    // Ã‰tat actuel
     EtatGeodesique etat = conditions_init;
 
-    // Paramètres d'intégration
+    // ParamÃ¨tres d'intÃ©gration
     double dt = 1.0;
     int steps = 100000;
     bool simulation_en_cours = false;
 
-    // Données de trajectoire
+    // DonnÃ©es de trajectoire
     vector<tuple<double, double, double, double>> trajectoire;
     auto cart_init = cartesian(etat.r, etat.theta, etat.phi, a);
     trajectoire.emplace_back(get<0>(cart_init), get<1>(cart_init), get<2>(cart_init), etat.tau);
 
-    // Paramètre de vitesse de simulation
+    // ParamÃ¨tre de vitesse de simulation
     float vitesse_simulation = 1.0f;
     const int MAX_ETAPES_PAR_FRAME = 100;
     float accumulateur_etapes = 0.0f;
 
-    // Variables pour détecter les changements de 'M' et 'a'
+    // Variables pour dÃ©tecter les changements de 'M' et 'a'
     double previous_M = M;
     double previous_a = a;
 
     // Boucle principale
     while (!glfwWindowShouldClose(window)) {
-        // Gestion des événements
+        // Gestion des Ã©vÃ©nements
         glfwPollEvents();
 
-        // Démarrer un nouveau frame ImGui
+        // DÃ©marrer un nouveau frame ImGui
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        // Fenêtre de contrôle
+        // FenÃªtre de contrÃ´le
         {
-            ImGui::Begin("Contrôles de Simulation");
+            ImGui::Begin("ContrÃ´les de Simulation");
 
             // Constantes de mouvement
             ImGui::Text("Constantes de Mouvement");
-            ImGui::InputDouble("Énergie (E)", &E, 0.01, 1.0, "%.5f");
+            ImGui::InputDouble("Ã‰nergie (E)", &E, 0.01, 1.0, "%.5f");
             ImGui::InputDouble("Moment Angulaire (L)", &L, 0.01, 1.0, "%.5f");
             ImGui::InputDouble("Constante de Carter (Q)", &Q, 0.01, 1.0, "%.5f");
             ImGui::InputDouble("Constante de Normalisation (mu)", &mu, 0.01, 1.0, "%.5f");
@@ -497,31 +497,31 @@ int main(int, char**) {
             ImGui::InputDouble("p_theta Initial", &conditions_init.p_theta, 0.01, 0.1, "%.5f");
             ImGui::Separator();
 
-            // Paramètres de simulation
-            ImGui::Text("Paramètres de Simulation");
+            // ParamÃ¨tres de simulation
+            ImGui::Text("ParamÃ¨tres de Simulation");
             ImGui::InputDouble("Masse (M)", &M, 0.1, 1.0, "%.3f");
-            ImGui::InputDouble("Pas d'intégration (dt)", &dt, 0.1, 1.0, "%.5f");
-            ImGui::InputInt("Nombre total d'étapes", &steps, 100, 1000, 100000);
+            ImGui::InputDouble("Pas d'intÃ©gration (dt)", &dt, 0.1, 1.0, "%.5f");
+            ImGui::InputInt("Nombre total d'Ã©tapes", &steps, 100, 1000, 100000);
             ImGui::Separator();
 
             // Vitesse de simulation
             ImGui::SliderFloat("Vitesse de Simulation", &vitesse_simulation, 0.1f, 10.0f, "x %.1f");
             ImGui::Separator();
 
-            // Paramètre de Kerr 'a'
-            ImGui::Text("Paramètre de Kerr");
+            // ParamÃ¨tre de Kerr 'a'
+            ImGui::Text("ParamÃ¨tre de Kerr");
             ImGui::SliderFloat("Spin (a)", &a, 0.0f, static_cast<float>(M), "%.3f");
             if (a > M) {
                 a = static_cast<float>(M);
             }
             ImGui::Separator();
 
-            // Contrôles
+            // ContrÃ´les
             if (ImGui::Button(simulation_en_cours ? "Pause" : "Start")) {
                 simulation_en_cours = !simulation_en_cours;
             }
             ImGui::SameLine();
-            if (ImGui::Button("Réinitialiser Simulation")) {
+            if (ImGui::Button("RÃ©initialiser Simulation")) {
                 etat = EtatGeodesique(conditions_init);
                 trajectoire.clear();
                 auto cart_init = cartesian(etat.r, etat.theta, etat.phi, a);
@@ -533,7 +533,7 @@ int main(int, char**) {
             }
             ImGui::SameLine();
             if (ImGui::Button("Exporter")) {
-                // Exporter les données dans un fichier CSV
+                // Exporter les donnÃ©es dans un fichier CSV
                 ofstream fichier("geodesics_export.csv");
                 if (fichier.is_open()) {
                     fichier << "x,y,z,tau\n";
@@ -545,18 +545,18 @@ int main(int, char**) {
                             << get<3>(point) << "\n";
                     }
                     fichier.close();
-                    cout << "Données exportées dans 'geodesics_export.csv'\n";
+                    cout << "DonnÃ©es exportÃ©es dans 'geodesics_export.csv'\n";
                 }
             }
 
             ImGui::Separator();
 
-            // Contrôles de la caméra
-            ImGui::Text("Contrôles de Caméra");
+            // ContrÃ´les de la camÃ©ra
+            ImGui::Text("ContrÃ´les de CamÃ©ra");
             ImGui::SliderFloat("Yaw (Horizontal)", &yaw_camera, -PI, PI, "%.2f rad");
             ImGui::SliderFloat("Pitch (Vertical)", &pitch_camera, -PI / 2, PI / 2, "%.2f rad");
             ImGui::SliderFloat("Distance", &distance_camera, 10.0f, 500.0f, "%.1f");
-            if (ImGui::Button("Réinitialiser Caméra")) {
+            if (ImGui::Button("RÃ©initialiser CamÃ©ra")) {
                 distance_camera = 100.0f;
                 yaw_camera = 0.0f;
                 pitch_camera = 0.0f;
@@ -573,9 +573,9 @@ int main(int, char**) {
             ImGui::End();
         }
 
-        // Fenêtre "État Actuel"
+        // FenÃªtre "Ã‰tat Actuel"
         {
-            ImGui::Begin("État Actuel");
+            ImGui::Begin("Ã‰tat Actuel");
 
             if (!trajectoire.empty()) {
                 ImGui::Text("r       : %.5f", etat.r);
@@ -586,13 +586,13 @@ int main(int, char**) {
                 ImGui::Text("p_theta : %.5f", etat.p_theta);
             }
             else {
-                ImGui::Text("Simulation non démarrée.");
+                ImGui::Text("Simulation non dÃ©marrÃ©e.");
             }
 
             ImGui::End();
         }
 
-        // Vérifier si 'M' a été modifié
+        // VÃ©rifier si 'M' a Ã©tÃ© modifiÃ©
         if (M != previous_M) {
             etat = EtatGeodesique(conditions_init);
             trajectoire.clear();
@@ -602,11 +602,11 @@ int main(int, char**) {
             simulation_en_cours = false;
             previous_M = M;
 
-            // Ajuster la distance de la caméra
+            // Ajuster la distance de la camÃ©ra
             distance_camera = 100.0f * (M / previous_M);
         }
 
-        // Vérifier si 'a' a été modifié
+        // VÃ©rifier si 'a' a Ã©tÃ© modifiÃ©
         if (a != previous_a) {
             if (a > M) {
                 a = static_cast<float>(M);
@@ -627,7 +627,7 @@ int main(int, char**) {
             int etapes_a_traiter = static_cast<int>(accumulateur_etapes);
             accumulateur_etapes -= etapes_a_traiter;
 
-            // Limiter le nombre d'étapes pour éviter les surcharges
+            // Limiter le nombre d'Ã©tapes pour Ã©viter les surcharges
             if (etapes_a_traiter > MAX_ETAPES_PAR_FRAME) {
                 etapes_a_traiter = MAX_ETAPES_PAR_FRAME;
                 accumulateur_etapes = 0.0f;
@@ -639,33 +639,33 @@ int main(int, char**) {
                     break;
                 }
 
-                // Intégration RK4
+                // IntÃ©gration RK4
                 etat = rungeKutta4(etat, dt, a, mu, E, L, Q, M);
 
-                // Conversion en coordonnées cartésiennes
+                // Conversion en coordonnÃ©es cartÃ©siennes
                 auto nouveau_cart = cartesian(etat.r, etat.theta, etat.phi, a);
                 trajectoire.emplace_back(get<0>(nouveau_cart), get<1>(nouveau_cart), get<2>(nouveau_cart), etat.tau);
 
-                // Décrémenter le nombre d'étapes
+                // DÃ©crÃ©menter le nombre d'Ã©tapes
                 steps--;
 
-                // Vérifier les conditions d'arrêt
+                // VÃ©rifier les conditions d'arrÃªt
                 double rayon_Schwarzschild = 2.0 * M;
                 if (etat.r < rayon_Schwarzschild) {
-                    cout << "La particule est tombée dans le trou noir.\n";
+                    cout << "La particule est tombÃ©e dans le trou noir.\n";
                     simulation_en_cours = false;
                     break;
                 }
 
                 if (etat.r > 1e7 * rayon_Schwarzschild) {
-                    cout << "La particule s'est échappée.\n";
+                    cout << "La particule s'est Ã©chappÃ©e.\n";
                     simulation_en_cours = false;
                     break;
                 }
             }
         }
 
-        // Dessiner la scène OpenGL
+        // Dessiner la scÃ¨ne OpenGL
         ImGui::Render();
         int largeur, hauteur;
         glfwGetFramebufferSize(window, &largeur, &hauteur);
@@ -683,7 +683,7 @@ int main(int, char**) {
         glMatrixMode(GL_PROJECTION);
         glLoadMatrixf(glm::value_ptr(projection));
 
-        // Calcul de la position de la caméra
+        // Calcul de la position de la camÃ©ra
         glm::vec3 position_camera(
             distance_camera * sin(yaw_camera) * cos(pitch_camera),
             distance_camera * sin(pitch_camera),
@@ -719,7 +719,7 @@ int main(int, char**) {
         glEnd();
         glEnable(GL_LIGHTING);
 
-        // Propriétés matérielles pour l'horizon des événements
+        // PropriÃ©tÃ©s matÃ©rielles pour l'horizon des Ã©vÃ©nements
         GLfloat ambient_horizon[] = { 0.0f, 0.0f, 0.0f, 1.0f };
         GLfloat diffuse_horizon[] = { 0.0f, 0.0f, 0.0f, 1.0f };
         GLfloat specular_horizon[] = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -730,7 +730,7 @@ int main(int, char**) {
         glMaterialfv(GL_FRONT, GL_SPECULAR, specular_horizon);
         glMaterialfv(GL_FRONT, GL_SHININESS, shininess_horizon);
 
-        // Dessiner l'horizon des événements
+        // Dessiner l'horizon des Ã©vÃ©nements
         int slices_horizon = 50;
         int stacks_horizon = 50;
         double rayon_horizon = M + sqrt(M * M - a * a);
@@ -770,7 +770,7 @@ int main(int, char**) {
             glEnd();
         }
 
-        // Dessiner l'ergosphère et le disque d'accrétion
+        // Dessiner l'ergosphÃ¨re et le disque d'accrÃ©tion
         dessinerErgosphere(M, a, slices_horizon, stacks_horizon);
         dessinerDisqueAccretion(M, a, 3.0, 20.0, 200);
 
@@ -800,7 +800,7 @@ int main(int, char**) {
         // Dessiner ImGui
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        // Échanger les buffers
+        // Ã‰changer les buffers
         glfwSwapBuffers(window);
     }
 
